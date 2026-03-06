@@ -91,9 +91,41 @@ kubectl --namespace default exec --stdin --tty curlpod -- /bin
 
 ```
 
+## port-forwardでアプリケーションにアクセス
+```
+# kubectl port-forward <Pod名> <転送先ポート番号>:<転送元ポート番号>
+kubectl port-forward myapp 5555:8080 --namespace default
+# 確認(別ターミナルで)
+curl localhost:5555
+```
+
+# 障害対応のためのkubectl コマンド
+## マニフェストをその場で編集
+```
+# kubectl edit <リソース名>
+kubectl edit pod myapp --namespace default
+```
+## リソースを削除する
+```
+# kubectl delete <リソース名>
+# kubectlにはPodを再起動するというコマンドがないため代替される
+
+# pod確認
+kubectl get pod --namespace default
+# pod削除
+kubectl delete pod myapp --namespace default
+```
+## kubectrlのチートシート
+https://kubernetes.io/docs/reference/kubectl/quick-reference/
 
 
 #　chapter5以降は以下コマンドで二つpodを立ち上げる
+
+## 事前準備
+### 準備１） 以下コマンドを実行するにはDocker Desktopを起動しておくこと。
+### クラスターの状態確認
+kind get clusters
+## クラスタ起動
 kubectl apply --filename chapter-04/myapp.yaml
 kubectl run myapp2 --image=blux2/hello-server:1.0 --namespace default
 kubectl apply --filename chapter-05/myapp-label.yaml
