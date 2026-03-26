@@ -118,6 +118,13 @@ kubectl delete pod myapp --namespace default
 ## kubectrlのチートシート
 https://kubernetes.io/docs/reference/kubectl/quick-reference/
 
+## kubectrl役立つツール
+- k9s  
+    https://k9scli.io/topics/commands/
+- starship  
+    https://starship.rs/
+- kubectx/kubens
+
 
 #　chapter5以降は以下コマンドで二つpodを立ち上げる
 
