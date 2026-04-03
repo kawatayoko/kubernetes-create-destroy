@@ -125,6 +125,51 @@ https://kubernetes.io/docs/reference/kubectl/quick-reference/
     https://starship.rs/
 - kubectx/kubens
 
+# Chapter　6　Kubernetesリソースを作って壊そう
+## 6.2 Podを冗長化するためのReplicaSetとDeployment
+- 実際の運用現場ではPodを直接作ることは推奨されていない
+    - Pod単体ではコンテナの冗長化ができないので
+- DeploymentとReplicaSet
+    - ReplicaSetは複数Podをまとめたもの
+    - Deploymentは複数ReplicaSetをまとめたもの
+    ```mermaid
+    graph LR
+
+    RS1[ReplicaSet] --> P1[Pod]
+    RS1 --> P2[Pod]
+
+    D[Deployment]
+
+    D -->|v2| RS2[ReplicaSet]
+    D -->|v1| RS3[ReplicaSet]
+
+    RS2 --> P3[Pod]
+    RS2 --> P4[Pod]
+
+    RS3 --> P5[Pod]
+    RS3 --> P6[Pod]
+    RS3 --> P7[Pod]
+    ```
+### ReplicaSet
+- 指定した数のPodを複製するリソース
+- 複製するPodの数をreplicasで指定する
+- ReplicaSet作成のコマンド
+```
+# Replica作成
+kubectl apply --filename chapter-06/replicaset.yaml --namespace default
+
+# Pod確認
+kubectl get pod --namespace default
+
+# ReplicaSetのリソース確認
+kubectl get replicaset --namespace default
+
+# ReplicaSetのリソース削除
+kubectl delete replicaset --namespace default
+```
+### Deployment
+
+
 
 #　chapter5以降は以下コマンドで二つpodを立ち上げる
 
