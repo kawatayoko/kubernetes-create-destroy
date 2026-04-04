@@ -154,7 +154,7 @@ https://kubernetes.io/docs/reference/kubectl/quick-reference/
 - 指定した数のPodを複製するリソース
 - 複製するPodの数をreplicasで指定する
 - ReplicaSet作成のコマンド
-```
+```sh
 # Replica作成
 kubectl apply --filename chapter-06/replicaset.yaml --namespace default
 
@@ -168,9 +168,37 @@ kubectl get replicaset --namespace default
 kubectl delete replicaset --namespace default
 ```
 ### Deployment
+- 本番の運用環境ではPod更新時に「無停止で更新する」ことが必要
+- Deployementは、ReplicaSetを複数管理し、ローリングアップデートを実現できる
 
+```sh
+# deploymentを作成
+$ kubectl apply --filename chapter-06/deployment.yaml --namespace default
+deployment.apps/nginx-deployment created
 
+# deploymentの作成を確認
+$ kubectl get deployment --namespace default
+NAME               READY   UP-TO-DATE   AVAILABLE   AGE
+nginx-deployment   3/3     3            3           84s
 
+# Podが作成されていることを確認
+$ kubectl get pod --namespace
+ default
+
+# ReplicaSetが作成されていることを確認
+$ kubectl get replicaset --namespace default
+
+# 作成したマニフェストを参照
+# StrategyType, RollingUpdateStrategy を参照できる
+kubectl describe deployment nginx-deployment
+```
+- StrategyType
+    - どのような先約でPodを更新するか？を定義
+    - Recreate
+        - 全部のPodを同時に更新
+    - RollingUpdate
+        - Podを順番に更新
+        - RollingUpdateStrategyを記載できる
 #　chapter5以降は以下コマンドで二つpodを立ち上げる
 
 ## 事前準備
