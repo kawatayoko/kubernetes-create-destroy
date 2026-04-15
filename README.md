@@ -199,6 +199,19 @@ kubectl describe deployment nginx-deployment
     - RollingUpdate
         - Podを順番に更新
         - RollingUpdateStrategyを記載できる
+
+### 6.2.3 作って直す　Deploymentをつくって壊そう
+- 親子関係の整理
+    - Deployment > ReplicaSet > Pod > Container
+- RollingUpdate時の設定項目
+    - maxUnavailable: 更新中に利用不能になってよいPodの最大数。小数点以下は切り下げ
+    - maxSurge: 更新中に一時的に増やしてよいPodの最大数。小数点以下は切り上げ
+    - Replicas: Pod数
+    
+    
+
+
+
 #　chapter5以降は以下コマンドで二つpodを立ち上げる
 
 ## 事前準備
