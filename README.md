@@ -207,7 +207,27 @@ kubectl describe deployment nginx-deployment
     - maxUnavailable: 更新中に利用不能になってよいPodの最大数。小数点以下は切り下げ
     - maxSurge: 更新中に一時的に増やしてよいPodの最大数。小数点以下は切り上げ
     - Replicas: Pod数
-    
+
+# 6.3 Podへのアクセスを助けるService
+- Service
+    - Deploymentで作成した複数Podへのアクセスを適切にルーティングするために利用するリソース
+    - Type
+        - ClusterIP: 
+            クラスタ内部のIPアドレスでServiceを公開    
+            ClusterIPはクラスタ内部からしか疎通できない。
+            外部公開するにはIngressというリソースを利用する
+            -> クラスタ内部とは？
+        - NodePort:
+            全ておNodeのIPアドレスで指定したポート番号を公開する
+            クラスタ外からもアクセス可能。port-fowardする必要がなくなる。
+            Nodeが故障すると使えなくなるので、本番環境ではClusterIPやLoadBalancerを利用するほうがよい
+        - LoadBalancer:
+            外部ロードバランサを用いて外部IPアドレスを公開
+            LBは別途よういする必要あり
+        - ExternaName:
+            ServiceをexternalNameフィールドの内容にマッピングする
+            （たとえば、ホスト名api.example.com）
+
     
 
 
