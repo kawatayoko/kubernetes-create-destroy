@@ -227,8 +227,18 @@ kubectl describe deployment nginx-deployment
         - ExternaName:
             ServiceをexternalNameフィールドの内容にマッピングする
             （たとえば、ホスト名api.example.com）
+    - Serviceを利用したDNS
+        - KubernetesではService用のDNSレコードを自動で作成してくれる
+            <Service名>.<Namespace名>.svc.cluster.local
+            で接続可能
+            ```
+            kubectl apply --filename chapter-06/service.y
+aml --namespace default
+            kubectl apply --filename chapter-06/deploymen
+t-hello-server.yaml --namespace default
+            kubectl --namespace default run curl --image curlimages/curl --rm --stdin --tty --restart=Never --command -- curl hello-server-service.default.svc.cluster.local:8080
+            ```
 
-    
 
 
 
