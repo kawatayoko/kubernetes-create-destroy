@@ -238,6 +238,25 @@ aml --namespace default
 t-hello-server.yaml --namespace default
             kubectl --namespace default run curl --image curlimages/curl --rm --stdin --tty --restart=Never --command -- curl hello-server-service.default.svc.cluster.local:8080
             ```
+# 6.4 Podの外部から情報を読み込むConfigMap
+- ConfigMap
+    - コンテナの外部から値を設定したいときに利用するリソース
+- 利用方法(2と３がよく使われる)
+    1. コンテナ内のコマンドの引数として読み込む
+    2. コンテナの環境変数として読み込む
+        - 変更後アプリケーションの再作成が必要
+        ```
+        kubectl rollout restart deployment/hello-server --namespace d
+efault
+        ```        
+    3. ボリュームを利用してアプリケーションのファイルとして読み込む
+        - アプリケーションの再作成不要
+        - ボリューム
+            Pod間でファイルを共有できるファイルシステム
+        
+
+- コンテナの環境変数として読み込む
+
 
 
 
