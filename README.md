@@ -266,7 +266,21 @@ efault
 - CronJobリソース
     - 定期的にJobを生成するリソース
     - CronJobはJobを作成、JobはPodを作成する
-    
+
+# 7.1 アプリケーションのヘルスチェックを行う
+- Readiness probe
+    - コンテナがReadyになるまでの時間やエンドポイントを制御する
+    - 失敗したらServiceから接続をはずす
+- Liveness probe
+    - Readminess probeとの違いは失敗時の挙動
+    - 失敗時はPodを再起動する
+        - 再起動を無限に繰り返してしじゃうリスクがあるため安易に導入しない
+        - 再起動でなおるケースが想定される場合に有効
+    - Readiness probeとの同時設定は可能
+        - Readiness probeが先に実行されることが推奨される
+            - initialDelaySeconds で調整する
+- Startup probe
+    - Pod初回起動時のみに使用するProbe
 
 #　chapter5以降は以下コマンドで二つpodを立ち上げる
 
