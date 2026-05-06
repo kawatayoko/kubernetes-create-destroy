@@ -282,6 +282,42 @@ efault
 - Startup probe
     - Pod初回起動時のみに使用するProbe
 
+# 7.2 アプリケーションに適切なリソースを指定しよう
+CPU・メモリ・EphemeralStrage　が指定できる
+- Resource requests
+    - コンテナのリソース使用量（下限）を要求する
+    - kubernetesのスケジューラはこの値を参照してスケジュールするNodeを決定する
+        - Nodeは物理サーバー、EC2、仮想マシンなどのPodをうごかすマシンのこと
+        - KubernetesはPodをどのNodeで動かすかを自動で決める
+            - その決定をするのがscheduler
+    - コンテナごとにCPUとメモリを指定できる
+- Resource limits
+    - コンテナのリソース使用量（上限）を指定する
+    - CPUが上限を超えた場合、スロットリングが発生する
+    - メモリが上限を超えた場合、Out Of Memory(OOM) でPodはkillされる
+- メモリ
+    - 単位を指定しない場合、1 = 1byte
+    - K, M, Ki, Mi などを指定可
+- CPU
+    - 単位を指定しない場合、1 = 1コア
+        - 1m = 0.001 コア
+        - 通常、整数 or ミリコアで指定する
+- PodのQuality of Service (QoS) Classes
+    - Nodeのメモリが完全に枯渇すると、Nodeに載っている全てのコンテナが動作できなくなる
+        - それを防止するためOOM Killerというプログラムがある
+        - OOMKillerは、OOMkillするPodの優先順位を決定し、優先度の低いPodからOOMkillする
+    - 優先順は以下
+        1. Guaranteed
+            Pod内のコンテナすべてにリソースのrequestsとlimitsが指定されている
+            メモリとCPUの値が、requests = limitsとなっている 
+        2. Burstable
+            Pod内のコンテナのうち、すくなくとも一つはメモリorCPUのrequests/limitsが指定あれている
+        3. BestEffort
+            Guaranteed, Burstableでないもの
+    - 以下のコマンドでQoSクラスを確認できる
+        `kubectl get pod hello-server --output jsonpath='{.status.qosClass}' --namespace default`
+
+
 #　chapter5以降は以下コマンドで二つpodを立ち上げる
 
 ## 事前準備
