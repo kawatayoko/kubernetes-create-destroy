@@ -317,6 +317,36 @@ CPU・メモリ・EphemeralStrage　が指定できる
     - 以下のコマンドでQoSクラスを確認できる
         `kubectl get pod hello-server --output jsonpath='{.status.qosClass}' --namespace default`
 
+# 7.3 Podのスケジュールに便利な機能
+NodeとPodの関係性の制御
+- Node selector
+    - 特定のNodeにのみスケジュールする
+        SSDをつかっているNodeにのみ`disktype: ssd`というラベルが付与されている場合
+        `nodeSelector: ssd`とマニフェストで指定することで、SSDを使っているNodeにのみPodをスケジュールできる
+- Affinity/Anti-affinity
+    - Affinity：類似性、密接な関係
+    - NodeとPod、あるいはPod同士が「近くなるように」「近づかないように」スケジュールする
+    - 3種類ある
+        - Node affinity
+            - Node selectorと近い。Node selectorより柔軟に設定できる。
+            - 「可能ならスケジュールする」という選択ができる
+            - `requiredDuringSchedulingIgnoredDuringExecution`
+                - 対応するNodeが見つからない場合、Podをスケジュールしない
+                - Node selectorと同じ考え方だが、Nodeの指定方法より柔軟
+            - `preferredDuringSchedulingIgnoredDuringExecution`
+                - 対応するNodeが見つからない場合、適当なNodeにスケジュールする
+            - `matchExpressions`を利用してNodeを指定する
+        - Pod affinity
+            - spec.affinity以下にpodAddinity/podAntiAffinityを指定する
+            - Pod間のAffinity
+            - すでにNodeにスケジュールされている既存Podのラベルに基づいて新規Podのスケジューリングする
+            - ユースケース
+                - Node障害に備えて「同じアプリケーションを動かしているPodは同じNodeに乗せない」
+            - Node affinityと同様に以下のルールを設定可能
+                - `requiredDuringSchedulingIgnoredDuringExecution`
+                - `preferredDuringSchedulingIgnoredDuringExecution`
+        - Pod anti-affinity
+
 
 #　chapter5以降は以下コマンドで二つpodを立ち上げる
 
