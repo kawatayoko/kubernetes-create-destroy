@@ -336,7 +336,7 @@ NodeとPodの関係性の制御
             - `preferredDuringSchedulingIgnoredDuringExecution`
                 - 対応するNodeが見つからない場合、適当なNodeにスケジュールする
             - `matchExpressions`を利用してNodeを指定する
-        - Pod affinity
+        - Pod affinity / Pod anti-affinity
             - spec.affinity以下にpodAddinity/podAntiAffinityを指定する
             - Pod間のAffinity
             - すでにNodeにスケジュールされている既存Podのラベルに基づいて新規Podのスケジューリングする
@@ -345,7 +345,28 @@ NodeとPodの関係性の制御
             - Node affinityと同様に以下のルールを設定可能
                 - `requiredDuringSchedulingIgnoredDuringExecution`
                 - `preferredDuringSchedulingIgnoredDuringExecution`
-        - Pod anti-affinity
+        - Pod Topology Spread Constraints
+            - Podを分散するための設定
+            - topologyKeyを使うことでどのようにPodを分散させるかを表現できる
+            - hostnameラベルを指定するとホスト間でPodを分散してスケジュールできる
+            - Pod anti-affinitiyでもおなじような設定ができるが、より柔軟に設定可能
+            - Pod Topology Spread Constraints ではPod数がNode数を超えてもなるべく分散させる設定ができる
+        - Taint / Toleration
+            - Taint: Nodeに付与する設定
+                - 「汚れ」の意味
+            - Toleration: Podに付与する設定
+                - 「寛容」の意味
+            - Traint（汚れ）をPodが許容できるか？という考えかたの設定
+            - あるNodeが特定のPodしかスケジュールしたくない、という指定方法
+            `kubectl taint nodes <対象ノード名> <label名>=<labelの値>:<Taintの効果>`
+        - Pod PriorityとPreemption
+            - Priority
+                - PodにPriorityを設定できる
+                - PriorityClassというリソースを使って設定する
+                    1. PriorityClassを作成する
+                    2. 1で設定したPriorityClassをPodのマニフェストに指定する
+            - Preemption
+                - priorityが低いPodをEvicctさせること        
 
 
 #　chapter5以降は以下コマンドで二つpodを立ち上げる
