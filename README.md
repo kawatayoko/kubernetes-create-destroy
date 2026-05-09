@@ -366,7 +366,25 @@ NodeとPodの関係性の制御
                     1. PriorityClassを作成する
                     2. 1で設定したPriorityClassをPodのマニフェストに指定する
             - Preemption
-                - priorityが低いPodをEvicctさせること        
+                - priorityが低いPodをEvicctさせること
+# 7.4 アプリケーションをスケールさせよう
+- 水平スケール（Horizontal Pod Autoscaler: HPA）
+    - サーバーの台数を増やす
+    - Pod数を増やす・減らす
+    - HPAを利用するにはmetrics-serverのインストールが必要
+    - インストール
+    ```
+    kubectl apply --filename https://github.com/kubernetes-sigs/metric
+s-server/releases/download/v0.6.4/components.yaml
+    kubectl patch --namespace kube-system deployment metrics-server --type=json --patch '[{"op":"add","path":"/spec/template/spec/containers/0/args/-","value":"--kubelet-insecure-tls"}]'
+    ```
+- 垂直スケール(Vertical Pod Autoscaler: VPA)
+    - サーバーの使用リソースを増やす
+    - VPAを利用することで自動でResource Requests/Limits の値を変更できる
+    - HPAと同じリソースに同時に適応不可
+    - なのでHPAのみ利用しているケースがおおい
+    
+
 
 
 #　chapter5以降は以下コマンドで二つpodを立ち上げる
