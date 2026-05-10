@@ -383,7 +383,21 @@ s-server/releases/download/v0.6.4/components.yaml
     - VPAを利用することで自動でResource Requests/Limits の値を変更できる
     - HPAと同じリソースに同時に適応不可
     - なのでHPAのみ利用しているケースがおおい
-    
+
+# 7.5 Nodeの退役に備える
+- PodDisruptioBudget(PDB)
+    - DeploymentでカバーできるのはあくまでPodを更新するときだけ
+    - 本番の運用では、NodeをメンテナンスするためにNodeからPodを退避させるなど、Podが増えたり減ったりするケースがある
+    - そういうケースでPodを安全に退避させるための機能がPodDisruptionBudget
+    - 直訳すると「Podがはかいされるときの予算」
+    - 予算を設定しておくことで、予算を超えないようにKubernetesが制御してくれる
+    - 設定項目
+        - minAvailable
+            最低いくつのPodが利用可能な状態であるか
+        - maxUnavailable
+            最大でいくつのPodが利用可能なじょうたいであるか
+
+
 
 
 
