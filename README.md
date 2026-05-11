@@ -397,8 +397,37 @@ s-server/releases/download/v0.6.4/components.yaml
         - maxUnavailable
             最大でいくつのPodが利用可能なじょうたいであるか
 
-
-
+# 9.1 Kubernetesのアーキテクチャ
+# 9.3 Control Plane
+- kube-apiserver
+    RESTで通信可能なAPIサーバー
+- etcd
+    分散型キーバリューストア
+    kubr-apiserverはkubectlからリクエストを受けつけて、etcdにデータを保存している
+    kubectl get では etcdに保存してあるデータをkube-apiserverを通じて受け取っている
+- kube-scheduler
+    PodをNodeにスケジュールする
+- kube-controller-manager
+    Kubernetesを最低限動かすために必要なコントローラーを動かす
+    「マニフェストに書かれている内容に応じて動作する」プログラム全般をコントローラーという
+    replicas: 3 の場合に、Podを3つよういするのは、Replication Controllerの仕事
+# 9.4 Worker Node
+- Worker Nodeは、実際にアプリケーションコンテナの起動を行うNode
+- kubelet
+    クラスタ内の各Nodeでうごいている
+    Podに紐づくコンテナを管理する
+    kubeletが起動しているNodeにPodがスケジュールされると、コンテナランタイムに指示してコンテナを起動する
+- kube-proxy
+    ネットワーク設定を行うコンポーネント
+    クラスタ内の各ノード上で動作する
+    kube-proxyによって、クラスタ内外のネットワークセッションからPodへのネットワーク通信が可能となる
+    Podの増減、Service追加、Endpoint変更を監視し、iptablesルールを同期させる役割（iptablesを書き換えている）
+- コンテナランタイム
+    containerd, CRI-O
+- kubectl
+    - kube-apiserverと通信するためのCLIツール
+    - kube-apiserverはRESTfulなAPIサーバーなのでcurlでも通信可能
+    
 
 
 #　chapter5以降は以下コマンドで二つpodを立ち上げる
