@@ -427,8 +427,29 @@ s-server/releases/download/v0.6.4/components.yaml
 - kubectl
     - kube-apiserverと通信するためのCLIツール
     - kube-apiserverはRESTfulなAPIサーバーなのでcurlでも通信可能
-    
 
+# 9.8 Kubernetesを拡張する方法
+- Kubernetesをユーザー自身が拡張できることがKubernetesの特徴の一つ
+- 独自リソース
+    - Custom Resource (CR)
+- 独自リソースを作るために必要な定義
+    - Custom Resource Definition(CRD)
+- カスタムコントローラー（コントローラー）
+    - CRを参照して動くプログラム
+    - kube-controller-managerのコントローラと同じ概念
+    - Deployment Controllerはkube-controller-manager に内包されている
+    - ConfigMapに必要な情報を書いておき、その情報を読むようなプログラムを書けばよいのでは？
+        - 判断基準がある
+            https://kubernetes.io/docs/concepts/extend-kubernetes/api-extension/custom-resources/#should-i-use-a-configmap-or-a-custom-resource
+            - 公式ドキュメントでは次のうち一つでも当てはまるものがあればConfigMapを使うと良いと書かれています。
+                1. 既存のよく文書化された設定ファイル形式がある
+                    (ex) mysql.conf, pom.xml
+                2. 設定全体をConfigMapの1つのキーに入れたい
+                3. Podで動作するプログラムが自身を設定するためにそのファイルを利用する
+                4. Kubrnetes APIではなく、PodのファイルやPodの環境変数を通じて利用したい
+                5. ファイルが更新されたとき、Deploymentなどを使ってローリングアップデートを実施したい
+            - 例えば、`kubectl get <CR名>`で情報を取得したり、宣言的なマニフェストを利用してReconcile処理を走らせたいときなど、Kubernetesの流儀に従ってKubernetesを拡張したいケースにおいてCRを利用するとよい
+            
 
 #　chapter5以降は以下コマンドで二つpodを立ち上げる
 
