@@ -449,7 +449,41 @@ s-server/releases/download/v0.6.4/components.yaml
                 4. Kubrnetes APIではなく、PodのファイルやPodの環境変数を通じて利用したい
                 5. ファイルが更新されたとき、Deploymentなどを使ってローリングアップデートを実施したい
             - 例えば、`kubectl get <CR名>`で情報を取得したり、宣言的なマニフェストを利用してReconcile処理を走らせたいときなど、Kubernetesの流儀に従ってKubernetesを拡張したいケースにおいてCRを利用するとよい
-            
+
+# 10.1 Kuvernetesにデプロイする
+- kubectl apply コマンドを使って継続的にデプロイするには以下の課題がある
+    - いつ誰がコマンドを実施したかわからない
+    - コマンドの実施によりマニフェストの衝突が発生する
+    - 手動での実施によるヒューマンエラーの発生
+- Push型のデプロイ方法：CIOps
+    - Push -> CI -> `kubectl apply` の実行
+    - masterブランチにfeatureブランチがマージされたら本番環境にkubectl applyを実行する、というもの
+- Pull型のデプロイ方法：GitOps
+    - 宣言的
+    - バージョン管理と不変
+    - 自動的に取得
+    - 継続的な調整
+- CIOps vs GitOps
+    - CIOps
+        - シンプル、わかりやすい、構築しやすい
+    - GitOps
+        - セキュリティリスクに強い 
+            Pull型なので読み取り権限があればよい（書き込み権限不要）
+        - CIとCDが分離できる
+            専用のデプロイツールを利用し、デプロイ情報を宣言的に管理することでCIと分離することが可能
+- GitOpsを実現するためのソフトウェア
+    - ArgoCD
+        - GitOps用のOSS
+        - Applicationという名前のCustom Resourceを利用する
+        - どのリポジトリの、どのマニフェストの、どのバージョンのマニフェストをどの環境に適応するか、を指定する
+    - Spinnaker
+        - Netflix社が開発していたツール
+        - Kubernetes以外にも主要なクラウドプロバイダに対応している
+    - FluxCD
+        - GitOpsを提唱したWeaveworks社が開発していた
+        - Argo CDとかなり近い
+        - マルチテナンシー
+
 
 #　chapter5以降は以下コマンドで二つpodを立ち上げる
 
