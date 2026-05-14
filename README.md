@@ -483,6 +483,32 @@ s-server/releases/download/v0.6.4/components.yaml
         - GitOpsを提唱したWeaveworks社が開発していた
         - Argo CDとかなり近い
         - マルチテナンシー
+# 10.2 Kubernetesのマニフェスト管理
+- Helm
+    - Helmはパッケージマネージャー
+    - マニフェストを作成する以上のことが可能
+    - Chartというテンプレートをもとにhelm installすることでKubernetesクラスタにマニフェストをデプロイする仕組み
+    - 他の開発者が開発したカスタムコントローラ用のマニフェストを利用したいケースで特に有効
+- Helmをインストール
+    brew install helm
+- Helm Chart Repositoryを追加
+    - Helm Chart Repositoryを追加
+    ```
+    helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+    helm repo update
+    ```
+    -  namespace 追加
+    ```
+    kubectl create namespace monitoring
+    ```
+- helm installを実行
+    - helm install <任意のリソース名> --namespace monitoring <Chart名>
+        - `helm install kube-prometheus-stack --namespace monitoring prometheus-community/kube-prometheus-stack`
+        - `helm show values prometheus-community/kube-prometheus-stack`
+    - `helm install` コマンドを直接実行する方法はGitOpsと相性が悪い
+        - ArgoCDなど各GitOpsエージェントを使用して、Helmインストール、マニフェスト管理を行う
+- Jsonnet
+    - KustomizeやHelmよりもかなり柔軟性が高いツール
 
 
 #　chapter5以降は以下コマンドで二つpodを立ち上げる
