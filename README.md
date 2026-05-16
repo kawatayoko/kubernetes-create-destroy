@@ -509,7 +509,34 @@ s-server/releases/download/v0.6.4/components.yaml
         - ArgoCDなど各GitOpsエージェントを使用して、Helmインストール、マニフェスト管理を行う
 - Jsonnet
     - KustomizeやHelmよりもかなり柔軟性が高いツール
+- 自作テンプレート
+    - どのツールでもうまく当てはまらない場合テンプレートを自作する方法もある
+    - 各言語にテンプレートライブラリが存在するので、自分の得意な言語でテンプレートを作ってみてもよい
+- Kustomize(カスタマイズ)
+    - マニフェストの共通部分はbaseというディレクトリで管理し、環境ごとの差分をoverlaysというディレクトリ内のマニフェストで管理する
+    - ArgoCDなどのGitOpsエージェントでサポートされている
+    - 最終成果物はkustomizeというツールを利用してビルドする
+    - kubectlもkustomizeに対応している
+    - 実践編
+        ビルドする時にkustomization.yamlを参照する
+        - kustomization.yaml
+            どのディレクトリ（ファイル）をbaseとするか？
+            どのディレクトリ（ファイル）をoverlaysとするか？
+            を定義する
+            - resources: 
+                ベースとなるディレクトリやファイルを記載する
+            - pathces:
+                overlaysでbaseの設定を上書きする時に使用する
+        - kustomize build <ディレクトリ名> ですべてのマニフェストをあとめて1つに出力してくれ
+            - `kustomize build ./overlays/staging | kubectl --namespace default apply -f -`
+            - `kustomize build ./overlays/statging | kubectl --namespace default delete -f -`
 
+# 11 オブザーバビリティとモニタリング
+## モニタリング
+あるシステムやそのシステムのコンポーネントの振る舞いや出力を観察し続ける行為（Mike Julian: 入門監視）
+## オブザーバービリティ
+- 可観測性：外部からシステムがどれくらい観測可能か？
+        問題があったときデバッグ用のプログラムを仕込まなくても観測した情報から原因を特定できること
 
 #　chapter5以降は以下コマンドで二つpodを立ち上げる
 
