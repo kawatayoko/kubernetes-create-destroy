@@ -585,6 +585,31 @@ s-server/releases/download/v0.6.4/components.yaml
 - Prometheus
     - /metrics というエンドポイントに対してアクセスする
 
+# 12.1
+- CKA
+    - 自前でKubernetesクラスタを構築してみよう
+        - Kubernetesクラスタの構築方法は、Control Planeまわりが自動化されていた
+        - etcdのセットアップ、Node間の認証、ネットワークのセットアップなど
+    - Kubernetes the Hard Wayを実施する
+        - https://github.com/kelseyhightower/kubernetes-the-hard-way
+        - Kubernetes the Hard Way にはいくつかあるが、上のリンクが最も有名
+        - GKEを利用するが、無料枠の範囲でできる
+    - ラズパイで自前Kubernetesクラスタを構築する
+        - 「おうちKubernetesクラスタ」で検索するとおうちでKubernetesクラスタを組んでいる人がたくさん見つかる
+        - https://developers.cyberagent.co.jp/blog/archives/27443/
+    - カスタムコントローラを作る
+        - Goのプログラミングが好き、Kubernetesの内部実装についてより詳しく知りたい場合、カスタムコントローラを作ってみよう
+        - 「実践入門Kubernetesカスタムコントローラへの道」
+        - kubebuilderを利用する
+            - kubebuilderを利用すると簡単にカスタムコントローラを作ることができる
+            - 「The Kubebuilder Book」
+                - https://book.kubebuilder.io/
+            - 「つくって学ぶKubebuilder」
+                - https://zoetrope.github.io/kubebuilder-training/
+            - 「Linuxのしくみ」竹内覚
+            
+
+
 #　chapter5以降は以下コマンドで二つpodを立ち上げる
 
 ## 事前準備
